@@ -1,0 +1,6 @@
+classes:
+- polyp
+nc: 1
+path: /root/Computer_vision/polyp_yolo_detection/yolo_data
+train: images/train
+val: images/val
