@@ -126,6 +126,7 @@ celerybeat.pid
 
 # SageMath parsed files
 *.sage.py
+face_recognition/podcast.mp4
 
 # Environments
 .env
