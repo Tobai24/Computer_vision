@@ -18,6 +18,8 @@
 
         formData.append("video", videoFile);
 
+        console.log("Sending video: ", videoFile.name); // Log the file name
+
         try {
           const response = await fetch("/process", {
             method: "POST",
@@ -30,6 +32,8 @@
             console.log(result);
           } else {
             alert("Failed to process the video.");
+            const result = await response.json();
+            console.error(result);
           }
         } catch (error) {
           console.error("Error:", error);

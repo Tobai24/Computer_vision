@@ -1,15 +1,10 @@
-from pathlib import Path
-
+import io
 import cv2
-import matplotlib.pyplot as plt
-
 import torch
-import torchvision
-from facenet_pytorch import MTCNN, InceptionResnetV1
 from PIL import Image
+from facenet_pytorch import MTCNN, InceptionResnetV1
 
-
-
+# Initialize MTCNN and InceptionResnetV1 models
 if torch.cuda.is_available():
     device = "cuda"
 elif torch.backends.mps.is_available():
@@ -22,23 +17,25 @@ embedding_data = torch.load("embeddings.pt")
 mtcnn = MTCNN(device=device, keep_all=True, min_face_size=60, post_process=False)
 resnet = InceptionResnetV1(pretrained="vggface2").eval()
 
-
-def recognize_faces_in_video(video_path, output_path, embedding_data, mtcnn, resnet, threshold=0.7):
+def recognize_faces_in_video(video_data, output_stream, embedding_data, mtcnn, resnet, threshold=0.7):
     """
-    Recognize faces in a video and output a labeled video.
-
+    Recognize faces in a video (from byte data) and output a labeled video to a byte stream.
+    
     Args:
-        video_path (str): Path to the input video file.
-        output_path (str): Path to save the output labeled video.
+        video_data (bytes): Byte data of the input video file.
+        output_stream (io.BytesIO): The byte stream where the output labeled video will be saved.
         embedding_data (list): List of tuples (embedding, name) for known faces.
         mtcnn: MTCNN face detector.
         resnet: Face recognition model.
         threshold (float): Distance threshold for recognition.
     """
-    # Open the input video file
-    cap = cv2.VideoCapture(video_path)
+    # Convert video data bytes to numpy array
+    video_np = np.frombuffer(video_data, dtype=np.uint8)
+
+    # Decode the video into individual frames using OpenCV
+    cap = cv2.VideoCapture(cv2.imdecode(video_np, cv2.IMREAD_COLOR))
     if not cap.isOpened():
-        print(f"Error: Cannot open video file {video_path}")
+        print(f"Error: Cannot decode video")
         return
 
     # Get video properties
@@ -47,8 +44,8 @@ def recognize_faces_in_video(video_path, output_path, embedding_data, mtcnn, res
     fps = int(cap.get(cv2.CAP_PROP_FPS))
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # Codec for the output video
 
-    # Create a VideoWriter object
-    out = cv2.VideoWriter(output_path, fourcc, fps, (width, height))
+    # Create a VideoWriter object to write the processed frames to the output byte stream
+    out = cv2.VideoWriter(output_stream, fourcc, fps, (width, height))
 
     frame_idx = 0
     while True:
@@ -97,4 +94,4 @@ def recognize_faces_in_video(video_path, output_path, embedding_data, mtcnn, res
     # Release resources
     cap.release()
     out.release()
-    print(f"Labeled video saved at {output_path}")
+    print(f"Labeled video saved to output stream")
