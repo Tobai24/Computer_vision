@@ -1,0 +1,56 @@
+@import url("https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC&display=swap");
+
+* {
+  padding: 0px;
+  margin: 0px;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100vh;
+  font-family: "LXGW WenKai TC", serif;
+  color: white;
+  background-color: black;
+}
+
+#box {
+  margin: 2rem;
+  border: 5px dashed lightcoral;
+  padding: 4rem;
+  width: 50%;
+  border-radius: 2rem;
+}
+
+input {
+  display: none;
+}
+
+form h1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10%;
+  cursor: pointer;
+}
+
+button {
+  border: 2px solid lightcoral;
+  background-color: black;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  font-weight: 700;
+  font-size: large;
+  font-family: "LXGW WenKai TC", serif;
+  width: 50%;
+  border-radius: 2rem;
+}
+
+#first {
+  font-size: 5rem;
+  margin-bottom: 2rem;
+}
