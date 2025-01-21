@@ -46,6 +46,7 @@ async def process_video(video: UploadFile = File(...)):
     except Exception as e:
         return JSONResponse(content={"error": str(e)}, status_code=500)
 
+app = app
 
 
 
