@@ -11,7 +11,7 @@ app = FastAPI()
 
 @app.get("/", response_class=HTMLResponse)
 async def serve_html():
-    html_file_path = Path(__file__).parent / "index.html"  # Update the path to your HTML file
+    html_file_path = Path(__file__).parent / "index.html" 
     return html_file_path.read_text()
 
 # Initialize models
