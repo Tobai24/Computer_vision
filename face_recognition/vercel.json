@@ -1,0 +1,14 @@
+{
+  "builds": [
+    {
+      "src": "face_recognition/main.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "face_recognition/main.py"
+    }
+  ]
+}
