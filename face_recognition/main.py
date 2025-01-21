@@ -2,23 +2,13 @@ from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import StreamingResponse, HTMLResponse
 from fastapi import HTTPException
 from pathlib import Path
-from fastapi.middleware.cors import CORSMiddleware
 from facenet_pytorch import MTCNN, InceptionResnetV1
 import io
-import json
 import torch
-import numpy as np
 from fastapi.staticfiles import StaticFiles
 from face_recognition import recognize_faces_in_video
 
 app = FastAPI()
-
-origins = ["*"]
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins= origins
-)
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
@@ -26,13 +16,6 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 device = "cpu"
 mtcnn = MTCNN(device=device, keep_all=True, min_face_size=60, post_process=False)
 resnet = InceptionResnetV1(pretrained='vggface2').eval().to("cpu")
-
-# Load the embeddings data
-# with open("embeddings.json", "r") as f:
-#     embeddings_loaded = json.load(f)
-
-# # Convert back to NumPy arrays if needed
-# embedding_data = [(np.array(item["embedding"]), item["name"]) for item in embeddings_loaded]
 
 embedding_data  = torch.load("embeddings.pt")
 
@@ -68,10 +51,3 @@ async def process_video(video: UploadFile = File(...)):
         # Log the detailed error message
         print(f"Error: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Failed to process video: {str(e)}")
-
-
-
-@app.get("/static_video")
-def get_static_video():
-    video_path = "data/output.mp4"
-    return StreamingResponse(open(video_path, "rb"), media_type="video/mp4")
