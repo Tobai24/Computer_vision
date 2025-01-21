@@ -18,10 +18,10 @@
 
         formData.append("video", videoFile);
 
-        console.log("Sending video: ", videoFile.name); // Log the file name
+        console.log("Sending video: ", videoFile.name);
 
         try {
-          const response = await fetch("/process", {
+          const response = await fetch("http://127.0.0.1:8000/process", {
             method: "POST",
             body: formData,
           });
