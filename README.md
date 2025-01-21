@@ -16,7 +16,7 @@ This repository contains various computer vision projects I'm working on, showca
 
 3. **Polyp Detection (YOLOv11) 🩺**
    - This model is fine-tuned on the **YOLOv11** architecture, leveraging its pre-trained weights to effectively detect polyps in gastrointestinal images.
-   - Check the `README` file in the **polyps_yolo_detection** folder for setup instructions and further details on the fine-tuned model.
+   - Check the `README` file in the **polyp_yolo_detection** folder for setup instructions and further details on the fine-tuned model.
 
 ### Setup Instructions ⚙️
 

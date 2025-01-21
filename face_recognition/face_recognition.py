@@ -1,11 +1,7 @@
-import tempfile
 import os
-import torch
 import cv2
-
+import torch
 import tempfile
-import cv2
-import torch
 from PIL import Image
 
 def recognize_faces_in_video(video_stream, output_stream, embedding_data, mtcnn, resnet, threshold=0.7):
@@ -25,11 +21,10 @@ def recognize_faces_in_video(video_stream, output_stream, embedding_data, mtcnn,
         os.remove(temp_video_file_path)
         return
 
-    # Get video properties
     width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
     fps = int(cap.get(cv2.CAP_PROP_FPS))
-    fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # Codec for the output video
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 
     # Create a temporary output file for the processed video
     with tempfile.NamedTemporaryFile(delete=False, suffix=".mp4") as temp_output_video_file:
@@ -40,10 +35,10 @@ def recognize_faces_in_video(video_stream, output_stream, embedding_data, mtcnn,
         while True:
             ret, frame = cap.read()
             if not ret:
-                break  # End of video
+                break 
 
             frame_idx += 1
-            rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)  # Convert frame to RGB
+            rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             image = Image.fromarray(rgb_frame)
 
             # Detect faces and generate cropped tensors
@@ -77,20 +72,18 @@ def recognize_faces_in_video(video_stream, output_stream, embedding_data, mtcnn,
                         frame, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2
                     )
 
-            # Write the processed frame to the output video
             out.write(frame)
 
-        # Release resources and clean up temporary file
         cap.release()
         out.release()
 
-    # Read the processed video into a byte stream
+
     with open(temp_output_video_path, "rb") as f:
         video_bytes = f.read()
 
-    # Delete the temporary video files
-    os.remove(temp_video_file_path)  # Remove the input temp file
-    os.remove(temp_output_video_path)  # Remove the output temp file
+    
+    os.remove(temp_video_file_path)  
+    os.remove(temp_output_video_path) 
 
     # Write the video to the output stream
     output_stream.write(video_bytes)

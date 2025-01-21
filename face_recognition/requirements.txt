@@ -5,5 +5,4 @@ Pillow
 facenet-pytorch
 numpy
 python-multipart
-ffmpeg-python
 

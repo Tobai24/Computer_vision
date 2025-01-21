@@ -60,3 +60,8 @@ h3 {
   width: 70%;
   text-align: center;
 }
+
+#processedVideo {
+  border: 5px dashed lightcoral;
+  margin-top: 2rem;
+}
